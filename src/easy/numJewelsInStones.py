@@ -9,6 +9,12 @@
 
 
 class Solution:
+    """
+    J 中不会出现重复
+    S 中会出现重复
+    第一层遍历J，第二层遍历S
+    当J中的字母与S中相等时统计+1
+    """
     def numJewelsInStones(self, J, S):
         """
         :type J: str
