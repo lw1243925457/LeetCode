@@ -53,10 +53,7 @@ class Solution:
     def toLowerCase(self, str: str) -> str:
         result = ''
         for char in str:
-            if char >= 'A' and char <= 'Z':
-                result += chr(ord(char) | 32)
-            else:
-                result += char
+            result += chr(ord(char) | 32)
         return result
 
 
