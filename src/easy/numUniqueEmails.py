@@ -15,6 +15,7 @@ class Solution:
     处理后的本地名称加上域名组合，使用集合进行存储
     集合具有去重功能，直接返回集合大小即可
     """
+
     def numUniqueEmails(self, emails):
         """
         :type emails: List[str]
@@ -35,6 +36,6 @@ class Solution:
 
 
 if __name__ == "__main__":
-    emails = ["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
+    emails = ["test.email+alex@leetcode.com", "test.e.mail+bob.cathy@leetcode.com", "testemail+david@lee.tcode.com"]
     solution = Solution()
     print(solution.numUniqueEmails(emails))
