@@ -12,6 +12,8 @@
 输入: "cbbd"
 输出: "bb"
 通过次数295,801提交次数961,380
+
+LeetCode 题解 | 5. 最长回文子串：https://zhuanlan.zhihu.com/p/38251499
 """
 class Solution:
     def longestPalindrome(self, s: str) -> str:
