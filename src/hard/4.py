@@ -21,16 +21,16 @@ nums2 = [3, 4]
 
 则中位数是 (2 + 3)/2 = 2.5
 通过次数210,326提交次数549,281
-"""
 
-"""
-解题思路：
-构建最大堆和最小堆来求解
+python中无穷大与无穷小表示:https://blog.csdn.net/hellojoy/article/details/81077019
+使用数组表达完全二叉树----二叉堆【理论】:https://www.cnblogs.com/webor2006/p/7685197.html
+最大堆（创建、删除、插入和堆排序）:https://www.jianshu.com/p/21bef3fc3030
 """
 from typing import List
 
 
 class maxHeap:
+    """最大堆"""
     def __init__(self, size: int):
         self.array = []
         for i in range(0, size + 1):
@@ -115,6 +115,7 @@ class maxHeap:
 
 
 class minHeap:
+    """最小堆"""
     def __init__(self, size: int):
         self.array = []
         for i in range(0, size + 1):
@@ -195,7 +196,16 @@ class minHeap:
         return self.index - 1
 
 
-class Solution:
+class Solution_Heap:
+    """
+    解题思路：
+    构建最大堆和最小堆来求解
+
+    暴露的问题：
+    用时有点长
+    边界问题考虑不全
+    赋值错位低级错误
+    """
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
         amount = len(nums1) + len(nums2)
         maxSize = int(amount / 2)
@@ -233,6 +243,62 @@ class Solution:
             return heapMax.pop()
 
 
+class Solution:
+    """
+    网友的思路：除了用二分法也可以用删除法做，时间复杂度也是log(m+n),先比较左端得到最小值，删掉，同时比较右端得最大值删掉，最后剩下的就是中位数了
+    感觉还行
+    """
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        amount = len(nums1) + len(nums2)
+        flag = 1
+        if amount % 2 == 0:
+            flag = 2
+
+        if len(nums1) + len(nums2) == flag:
+            return self.average(nums1, nums2, flag)
+
+        while True:
+            # delete min
+            min1 = float('inf')
+            min2 = float('inf')
+            if len(nums1) != 0:
+                min1 = nums1[0]
+            if len(nums2) != 0:
+                min2 = nums2[0]
+
+            if min1 < min2:
+                nums1 = nums1[1:]
+            else:
+                nums2 = nums2[1:]
+
+            # print("delete min", nums1, nums2, flag)
+            if len(nums1) + len(nums2) == flag:
+                return self.average(nums1, nums2, flag)
+
+            # delete max
+            max1 = float('-inf')
+            max2 = float('-inf')
+            if len(nums1) != 0:
+                max1 = nums1[len(nums1) - 1]
+            if len(nums2) != 0:
+                max2 = nums2[len(nums2) - 1]
+
+            if max1 > max2:
+                nums1 = nums1[:len(nums1) - 1]
+            else:
+                nums2 = nums2[:len(nums2) - 1]
+
+            # print("delete max", nums1, nums2, flag)
+            if len(nums1) + len(nums2) == flag:
+                return self.average(nums1, nums2, flag)
+
+    def average(self, nums1, nums2, flag) -> float:
+        amount = 0
+        for num in nums1 + nums2:
+            amount = amount + num
+        return amount / flag
+
+
 if __name__ == "__main__":
     # heap1 = maxHeap(10)
     # heap1 = minHeap(10)
@@ -243,29 +309,29 @@ if __name__ == "__main__":
     # print(heap1.pop())
 
     s = Solution()
-    # nums1 = [1, 3]
-    # nums2 = [2]
-    # assert s.findMedianSortedArrays(nums1, nums2) == 2.0
+    nums1 = [1, 3]
+    nums2 = [2]
+    assert s.findMedianSortedArrays(nums1, nums2) == 2.0
 
-    # nums1 = [1, 2]
-    # nums2 = [3, 4]
-    # assert s.findMedianSortedArrays(nums1, nums2) == 2.5
+    nums1 = [1, 2]
+    nums2 = [3, 4]
+    assert s.findMedianSortedArrays(nums1, nums2) == 2.5
 
-    # nums1 = []
-    # nums2 = [1, 2, 3, 4, 5, 6]
-    # assert s.findMedianSortedArrays(nums1, nums2) == 3.5
+    nums1 = []
+    nums2 = [1, 2, 3, 4, 5, 6]
+    assert s.findMedianSortedArrays(nums1, nums2) == 3.5
 
-    # nums1 = [0, 0]
-    # nums2 = [0, 0]
-    # assert s.findMedianSortedArrays(nums1, nums2) == 0
+    nums1 = [0, 0]
+    nums2 = [0, 0]
+    assert s.findMedianSortedArrays(nums1, nums2) == 0
 
-    # nums1 = [1]
-    # nums2 = [1]
-    # assert s.findMedianSortedArrays(nums1, nums2) == 1
+    nums1 = [1]
+    nums2 = [1]
+    assert s.findMedianSortedArrays(nums1, nums2) == 1
 
-    # nums1 = [1]
-    # nums2 = [2, 3, 4, 5, 6, 7]
-    # assert s.findMedianSortedArrays(nums1, nums2) == 4
+    nums1 = [1]
+    nums2 = [2, 3, 4, 5, 6, 7]
+    assert s.findMedianSortedArrays(nums1, nums2) == 4
 
     nums1 = [76, 89, 104, 287, 566, 596, 660, 719, 879, 1012, 1080, 1225, 1304, 1568, 1898, 1959, 1965, 2140, 2276, 2395, 2634,
      2764, 2801, 2877, 3009, 3010, 3188, 3318, 3356, 3459, 3549, 3586, 3793, 3844, 3890, 4297, 4328, 4423, 4494, 4546,
@@ -339,4 +405,4 @@ if __name__ == "__main__":
      31446, 31511, 31516, 31518, 31562, 31721, 31779, 31813, 31849, 31865, 31866, 31906, 31906, 31934, 31941, 31954,
      32015, 32083, 32150, 32205, 32232, 32267, 32268, 32294, 32351, 32373, 32396, 32400, 32405, 32452, 32479, 32480,
      32487, 32491, 32491, 32561, 32590, 32605, 32641, 32716, 32757]
-    assert s.findMedianSortedArrays(nums1, nums2) == 4
+    assert s.findMedianSortedArrays(nums1, nums2) == 16240.0
