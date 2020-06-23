@@ -34,9 +34,14 @@ T     S     G
 行数确定时，Z的高宽也确定，字符数也确定，为 row*3-2，
 二维数组的高为行数，宽为：len（s) / (row / 2)
 如果行数小于2，直接返回即可
+
+找规律：
+一个V循环是2n-2
 """
 class Solution:
     def convert(self, s: str, numRows: int) -> str:
+        # return self.read(s, numRows)
+
         if numRows < 2:
             return s
 
@@ -83,6 +88,19 @@ class Solution:
                 posy = posy + 1
                 direction = 0
         return posx, posy, direction
+
+    def read(self, s: str, numRows: int) -> str:
+        if numRows < 2:
+            return s
+        result = ""
+        cycleLen = 2 * numRows - 2
+        for i in range(0, numRows):
+            for j in range(0, len(s), cycleLen):
+                result += s[i + j]
+                if i != 0 and i != numRows - 1 and j + cycleLen - i < len(s):
+                    result += s[j + cycleLen - i]
+        print(result)
+        return result
 
 
 if __name__ == "__main__":
