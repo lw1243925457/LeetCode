@@ -52,6 +52,11 @@
 1 <= rows <= 150
 1 <= columns <= 150
 0 <= mat[i][j] <= 1
+
+
+解题思路：
+参考网上的题解，先使用连续的1原理统计横向，再使用&叠加统计纵向
+难搞，思想很奇妙，自己很难想到
 """
 from typing import List
 
@@ -59,48 +64,21 @@ from typing import List
 class Solution:
     def numSubmat(self, mat: List[List[int]]) -> int:
         amount = 0
+
         for i in range(0, len(mat)):
-            for j in range(0, len(mat[i])):
-                if mat[i][j] == 1:
-                    amount += 1
-                    amount += self.up(mat, i, j)
-                    amount += self.left(mat, i, j)
-                    amount += self.center(mat, i, j, 2, 2)
-                # print(i, j, amount)
-        print(amount)
-        return amount
+            for j in range(i, len(mat)):
+                count = 0
+                for k in range(0, len(mat[i])):
+                    if mat[j][k] == 1:
+                        count = count + 1
+                        amount = amount + count
+                    else:
+                        count = 0
 
-    def up(self, mat, i, j):
-        amount = 0
-        size = 1
-        while i - size >= 0:
-            if mat[i - size][j] == 1:
-                amount += 1
-                size += 1
-            else:
-                return amount
+            for j in range(len(mat) - 1, i-1, -1):
+                for k in range(0, len(mat[j])):
+                    mat[j][k] = mat[j][k] & mat[j-1][k]
         return amount
-
-    def left(self, mat, i, j):
-        amount = 0
-        size = 1
-        while j - size >= 0:
-            if mat[i][j - size] == 1:
-                amount += 1
-                size += 1
-            else:
-                return amount
-        return amount
-
-    def center(self, mat, i, j, hs, ws):
-        if i - hs + 1 < 0 or j - ws + 1 < 0:
-            return 0
-        # print(i, j, cs, "center:", mat[i - cs + 1][j], mat[i][j - cs + 1], mat[i - cs + 1][j - cs + 1])
-        if mat[i - hs + 1][j] == 1 and mat[i][j - ws + 1] == 1 and mat[i - hs + 1][j - ws + 1] == 1:
-            return 1 + self.center(mat, i, j, hs + 1, ws) + self.center(mat, i, j, hs, ws + 1) + self.center(mat, i, j,
-                                                                                                             hs + 1,
-                                                                                                             ws + 1)
-        return 0
 
 
 if __name__ == "__main__":

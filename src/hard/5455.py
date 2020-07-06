@@ -48,38 +48,19 @@ num 只包含 数字 且不含有 前导 0 。
 
 
 超出时间限制
+暴力解不行，不规范，过会研究下正确的
 """
 class Solution:
     def minInteger(self, num: str, k: int) -> str:
-        result = self.convert(list(num), k, 0)
-        print(''.join(result))
-        return ''.join(result)
+        if k <= 0 or not num: return num
 
-    def convert(self, num, k, current):
-        # print("k:", k, "current:", current)
-        if k < 1:
-            return num
-        if current >= len(num):
-            return num
+        # 这个是tricky的代码...不加会超时
+        if len(num) ** 2 < k: return ''.join(sorted(list(num)))
 
-        minest = int(num[current])
-        index = current
-        length = len(num)
-        if current + k + 1 < len(num):
-            length = current + k + 1
-        for i in range(current + 1, length):
-            if minest > int(num[i]):
-                index = i
-                minest = int(num[i])
-        if index == current:
-            return self.convert(num, k, current + 1)
-
-        minest = num[index]
-        for i in range(index, current, -1):
-            num[i] = num[i - 1]
-        num[current] = minest
-        # print(num, k, current, "index:", index, "minest:", minest, length)
-        return self.convert(num, k - (index - current), current + 1)
+        # 每次寻找前`k+1`个数字中的最小数字的最小下标，复杂度O(n^2)。。。
+        index = num.index(min(num[:k + 1]))
+        res = num[index] + self.minInteger(num[:index] + num[index + 1:], k - index)
+        return res
 
 
 if __name__ == "__main__":
