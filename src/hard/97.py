@@ -21,16 +21,16 @@ class Solution:
         if m + n != len(s3):
             return False
 
-        dp = [[False] * (m+1)] * (n+1)
+        dp = [[False] * (m + 1)] * (n + 1)
         dp[0][0] = True
 
-        for i in range(0, n+1):
-            for j in range(0, m+1):
+        for i in range(0, n + 1):
+            for j in range(0, m + 1):
                 p = i + j - 1
                 if i > 0:
-                    dp[i][j] &= (dp[i-1][j] and s1[i-1] == s3[p])
+                    dp[i][j] &= (dp[i - 1][j] and s1[i - 1] == s3[p])
                 if j > 0:
-                    dp[i][j] |= (dp[i][j-1] and s2[j-1] == s3[p])
+                    dp[i][j] |= (dp[i][j - 1] and s2[j - 1] == s3[p])
 
         return dp[n][m]
 
@@ -38,3 +38,4 @@ class Solution:
 if __name__ == "__main__":
     s = Solution()
     assert s.isInterleave(s1="aabcc", s2="dbbca", s3="aadbbcbcac")
+    assert not s.isInterleave(s1="aabcc", s2="dbbca", s3="aadbbbaccc")
