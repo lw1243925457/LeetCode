@@ -28,23 +28,37 @@ class ListNode:
 
 class Solution:
     def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
-        right = head
-        for i in range(0, n):
-            p = head.next
+        empty = ListNode(0)
+        empty.next = head
 
-        p.next.next = p.next.next.next
-        return head
+        right = empty
+        for i in range(0, n+1):
+            right = right.next
+
+        left = empty
+        while right is not None:
+            left = left.next
+            right = right.next
+
+        left.next = left.next.next
+        return empty.next
 
 
 if __name__ == "__main__":
+    s = Solution()
+
+    root = ListNode(1)
+    s.removeNthFromEnd(root, 1)
+    while root is not None:
+        print(root.val)
+        root = root.next
+
     root = ListNode(1)
     root.next = ListNode(2)
     root.next.next = ListNode(3)
     root.next.next.next = ListNode(4)
     root.next.next.next.next = ListNode(5)
-    s = Solution()
     s.removeNthFromEnd(root, 2)
-
     while root is not None:
         print(root.val)
         root = root.next
