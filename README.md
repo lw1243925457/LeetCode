@@ -1,25 +1,16 @@
 # LeetCode Python3 刷题记录
 ***
-*已解决 50/1706 - 简单 26 中等 19 困难 5*
+Python3 LeetCode 刷题代码
 
-### easy
-- 771.宝石与石头
-- 169.求众数
-- 929.独特的电子邮件地址
-- 977.有序数组的平方
-- 709.转换成小写字母
-- 1.两数之和
-- 771
-- 983
-- 1021
-- 804
-- 121.买卖股票的最佳时机
+### 需要2刷的题目
+- [3. 无重复字符的最长子串](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/)
+- [4. 寻找两个正序数组的中位数](https://leetcode-cn.com/problems/median-of-two-sorted-arrays/)
+- [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/)
 
-### middle
-- 709
-- 面试题64. 求1+2+…+n
-- 1669:两数相加
+### 值得2刷的题目
+- [11. 盛最多水的容器](https://leetcode-cn.com/problems/container-with-most-water/):变种好像有很多
+- [15. 三数之和](https://leetcode-cn.com/problems/3sum/):18变种四数和，16三数最接近
+- [19. 删除链表的倒数第N个节点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/)
+- 29：[两数相除](https://leetcode-cn.com/problems/divide-two-integers)
+- 30：[串联所有单词的子串](https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words)
 
-### hard
-- 1468:面试题 17.21. 直方图的水量
-- 4:寻找两个正序数组的中位数
