@@ -17,25 +17,32 @@
 
 解题思路：
 1刷：一次遍历法还巧妙
+2刷：使用hashmap一次遍历法
 
 给的数组不一定有序，同一个元素不能使用两次是值不能相同，还是下标不同即可？这里看返回下标，则认定下标不同即可吧
 用hash给值保存下标
 后面遍历数组，判断是否有符合的
 
 hash查找时O(1)，遍历一次，则是O(N)
+
+=====================================================
+使用hashma存下，当前遍历数
+并判断当前数与目标值的差值是否在hashmap中并且下标不同，返回两下标即可
 """
 from typing import List
 
 
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        n = len(nums)
-        num2index = {}
-        for i in range(0, n):
-            remain = target - nums[i]
-            if remain in num2index and num2index[remain] != i:
-                return [i, num2index[remain]]
-            num2index[nums[i]] = i
+        if not nums:
+            return []
+
+        hashmap = {}
+        for i in range(0, len(nums)):
+            div = target - nums[i]
+            if div in hashmap and hashmap[div] != i:
+                return [hashmap[div], i]
+            hashmap[nums[i]] = i
         return []
 
 
