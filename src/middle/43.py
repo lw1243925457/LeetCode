@@ -23,16 +23,13 @@ num1 和 num2 均不以零开头，除非是数字 0 本身。
 """
 class Solution:
     def multiply(self, num1: str, num2: str) -> str:
-        if not num1 or num1 == "1":
-            return num2
-        if not num2 or num2 == "1":
+        if num1 == "1" or num2 == "1":
             return num1
         if num1 == "0" or num2 == "0":
             return "0"
 
         def multi(num: int, mcarry: int) -> str:
-            if num == 0:
-                return "0"
+            if num == 0: return "0"
 
             res = ""
             carry = 0
