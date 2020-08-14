@@ -33,29 +33,19 @@
 
 class Solution:
     def isValid(self, s: str) -> bool:
+        if len(s) % 2 != 0:
+            return False
+
         stack = []
+        brackets = {"}": "{", ")": "(", "]": "["}
         for c in s:
-            if c == '(':
-                stack.append(c)
-            elif c == ')':
-                if len(stack) > 0 and stack[-1] == '(':
+            if c in brackets:
+                if len(stack) > 0 and stack[-1] == brackets[c]:
                     stack.pop()
                 else:
                     return False
-            elif c == '{':
+            else:
                 stack.append(c)
-            elif c == '}':
-                if len(stack) > 0 and stack[-1] == '{':
-                    stack.pop()
-                else:
-                    return False
-            elif c == '[':
-                stack.append(c)
-            elif c == ']':
-                if len(stack) > 0 and stack[-1] == '[':
-                    stack.pop()
-                else:
-                    return False
         print(stack)
         return len(stack) == 0
 
