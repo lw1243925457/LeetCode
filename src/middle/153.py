@@ -19,8 +19,45 @@
 
 
 解题思路：
-借鉴33. 搜索旋转排序数组，二分查找的变种，根据特定可以判断出最小值在非递增的另一半中
-1.将数组一分为二，记录左右及中间值
-2.判断左值是否小于中间值
-    1.小于，则左部分是有序递增的，
+解法1：
+参考官方题解，这种题感觉有点像找规律。。。。。。
+变化点左侧元素大于第一个元素
+变化点右侧元素小于第一个元素
+
+当mid > mid + 1 or mid-1 < mid时就是变化点，返回即可
+当mid > left 时，左边有序的，搜索右边，反之
+
+解法2：
+提交区的发现的一个思路：判断最左值是否小于最右值即可
+感觉搜索次数应该比方法1多，比较方法1中间就可能找到答案，而它要到最后
+
+两种方法时间复杂度都是O(logN)
 """
+from typing import List
+
+
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n < 2:
+            return nums[0]
+
+        if nums[0] < nums[-1]:
+            return nums[0]
+
+        left, right = 0, n - 1
+        while left < right:
+            mid = (left + right) // 2
+            if nums[mid] > nums[mid + 1]:
+                return nums[mid + 1]
+            if nums[mid] < nums[mid - 1]:
+                return nums[mid]
+            if nums[left] < nums[mid]:
+                left = mid + 1
+            else:
+                right = mid - 1
+
+
+if __name__ == "__main__":
+    solution = Solution()
+    assert solution.findMin([3, 4, 5, 1, 2]) == 1
