@@ -13,3 +13,6 @@ Python3 LeetCode 刷题代码
 - [19. 删除链表的倒数第N个节点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/)
 - 29：[两数相除](https://leetcode-cn.com/problems/divide-two-integers)
 - 30：[串联所有单词的子串](https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words)
+
+### 思路很巧妙的题目
+- 560：和为K的子数组

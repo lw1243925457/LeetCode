@@ -112,3 +112,8 @@ venv.bak/
 *.iml
 out
 gen
+
+# leetcode
+doc
+all.json
+translation.json
