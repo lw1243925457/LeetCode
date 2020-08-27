@@ -30,8 +30,62 @@ from typing import List
 
 
 class Solution:
+    """解题思路：
+    一、四个数加括号单独枚举有点复杂，可以简化成 （a * b) * (c * d)
+        即两两数相操作后结果在操作
+    """
+
     def judgePoint24(self, nums: List[int]) -> bool:
-        for i in range(0, 4):
-            for j in range()
+        for i in range(0, len(nums)):
+            tempi = nums.copy()
+            tempi.remove(nums[i])
+            for j in range(0, len(nums)):
+                if i == j:
+                    continue
+                tempj = tempi.copy()
+                tempj.remove(nums[j])
+                print(nums[i], nums[j], tempj)
+                for k in range(0, 4):
+                    num5 = self._operation(nums[i], nums[j], k)
+                    if num5 is None:
+                        continue
+                    for m in range(0, 4):
+                        num6 = self._operation(tempj[0], tempj[1], m)
+                        if num6 is None:
+                            continue
+                        for n in range(0, 4):
+                            if self._operation(num5, num6, n) == 24 or self._operation(num6, num5, n) == 24:
+                                print(nums[i], nums[j], k, tempj[0], tempj[1], m, num5, num6, n)
+                                return True
+                    for m in range(0, 4):
+                        num6 = self._operation(tempj[1], tempj[0], m)
+                        if num6 is None:
+                            continue
+                        for n in range(0, 4):
+                            if self._operation(num5, num6, n) == 24 or self._operation(num6, num5, n) == 24:
+                                print(nums[i], nums[j], k, tempj[0], tempj[1], m, num5, num6, n)
+                                return True
+        return False
+
+    def _operation(self, param1, param2, k):
+        if k == 0:
+            return param1 + param2
+        if k == 1:
+            return param1 - param2
+        if k == 2:
+            return param1 * param2
+        if k == 3:
+            if param2 == 0:
+                return None
+            return param2 / param2
+
 
 # leetcode submit region end(Prohibit modification and deletion)
+
+
+if __name__ == "__main__":
+    solution = Solution()
+    assert not solution.judgePoint24([1, 2, 1, 2])
+    assert not solution.judgePoint24([1, 5, 9, 1])
+    assert solution.judgePoint24([1, 8, 2, 5])
+    assert solution.judgePoint24([3, 9, 7, 7])
