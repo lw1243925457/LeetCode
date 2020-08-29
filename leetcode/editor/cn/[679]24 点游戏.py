@@ -26,7 +26,6 @@
 
 
 # leetcode submit region begin(Prohibit modification and deletion)
-from functools import lru_cache
 from typing import List
 
 
@@ -40,87 +39,84 @@ class Solution:
 
     注：添加了一个计算缓存，避免重复计算
 
+    二、两两计算：是我之前没能领略其正真含义，这个才是最佳的解法，计算后的结果也加入两两随机计算中，得到最后一个结果
+
 
     变形：
     1.如何获得所有可能的24的组合
-    找出来还是容易的，但正确的输出有点麻烦。。。。。
-    难道要数字加计算符全排列？
+    方法2改写下就行了，感觉差不多可以了，nice
     """
 
-    def __init__(self):
-        self.results = []
-
     def judgePoint24(self, nums: List[int]) -> bool:
-        arranges = []
-        self._arrange(nums, arranges, [])
-        for arrange in arranges:
-            # if self._canGet24(arrange):
-            #     return True
-            # self._canGet24(arrange)
-            expresions = []
-            self._getAllexp(arrange, [str(arrange[0])], 1, expresions)
-            print(expresions)
-            for exp in expresions:
-                print(exp, end= " ")
-                print(eval(exp))
-                if eval(exp) == 24:
-                    print(exp)
-        # print("等于24的组合如下：")
-        # for result in self.results:
-        #     print(result)
-        return False
-
-    def _getAllexp(self, arrange, path, index, expresions):
-        if index >= 4:
-            exp = path.copy()
-            # expresions.append("".join(exp))
-            expresions.append(exp)
-            return
-        for cal in ["+", "-", "*", "/"]:
-            if (cal == "*" or cal == "/") and (arrange[index] == 0 or arrange[index-1] == 0):
-                continue
-            path.append(cal)
-            path.append(str(arrange[index]))
-            self._getAllexp(arrange, path, index+1, expresions)
-            path.pop()
-            path.pop()
-
-    def _addBracket(self, expressions, index):
-        eprB = []
-        for i in range(0, )
-
-    def _arrange(self, nums, arranges, path):
-        """数字全排列"""
-        if len(path) == 4:
-            arranges.append(path.copy())
-            return
-
+        """
+        # 输出24的计算表达式
+        expressions = []
         for i in range(0, len(nums)):
-            path.append(nums[i])
-            self._arrange(nums[:i] + nums[i+1:], arranges, path)
-            path.pop()
+            nums[i] = str(nums[i])
+        self._getAllExpressions(nums, expressions)
+        print(expressions)
+        for expression in expressions:
+            try:
+                if eval(expression) == 24:
+                    print(expression)
+            except:
+                continue
+        return True
+        """
 
-    def _canGet24(self, arrange):
-        """两两直接计算"""
-        print("arrange:", arrange)
-        for val1 in self._compute(arrange[0], arrange[1]):
-            for val2 in self._compute(val1, arrange[2]):
-                for val3 in self._compute(val2, arrange[3]):
-                    if abs(val3-24.0) < 1e-5:
-                        return True
-        for val1 in self._compute(arrange[0], arrange[1]):
-            for val2 in self._compute(arrange[2], arrange[3]):
-                for val3 in self._compute(val1, val2):
-                    if abs(val3-24.0) < 1e-5:
+        if len(nums) == 1:
+            if abs(nums[0] - 24) < 1e-5:
+                return True
+            return False
+
+        for i in range(0, len(nums) - 1):
+            for j in range(i + 1, len(nums)):
+                for val in self._compute(nums[i], nums[j]):
+                    temp = nums.copy()
+                    temp.remove(nums[i])
+                    temp.remove(nums[j])
+                    temp.append(val)
+                    if self.judgePoint24(temp):
                         return True
         return False
 
     def _compute(self, lvals, rvals):
         """返回两数直接可能的计算结果"""
-        res = [lvals + rvals, lvals - rvals, rvals + lvals, rvals - lvals]
-        if lvals != 0 and rvals != 0:
-            res += [lvals * rvals, rvals / lvals, lvals / rvals]
+        res = [lvals + rvals, lvals - rvals, rvals + lvals, rvals - lvals, lvals * rvals]
+        if lvals != 0:
+            res.append(rvals / lvals)
+        if rvals != 0:
+            res.append(lvals / rvals)
         return res
+
+    def _getAllExpressions(self, nums, expressions):
+        if len(nums) == 1:
+            expressions.append(nums[0])
+            return
+
+        for i in range(0, len(nums) - 1):
+            for j in range(i + 1, len(nums)):
+                for operation in ["+", "-", "*", "/"]:
+                    temp = nums.copy()
+                    temp.remove(nums[i])
+                    temp.remove(nums[j])
+                    for expression in self._getExpression(operation, nums[i], nums[j]):
+                        self._getAllExpressions(temp + [expression], expressions)
+
+    def _getExpression(self, operation, param1, param2):
+        if operation == "+":
+            return ["(%s+%s)" % (param1, param2)]
+        if operation == "-":
+            return ["(%s-%s)" % (param1, param2), "(%s-%s)" % (param2, param1)]
+        if operation == "*":
+            return ["(%s*%s)" % (param1, param2)]
+        if operation == "/":
+            res = []
+            if param2 != 0:
+                res.append("(%s/%s)" % (param1, param2))
+            if param1 != 0:
+                res.append("(%s/%s)" % (param2, param1))
+            return res
 
 
 # leetcode submit region end(Prohibit modification and deletion)
@@ -133,6 +129,6 @@ if __name__ == "__main__":
     # assert solution.judgePoint24([1, 8, 2, 5])
     # assert solution.judgePoint24([3, 9, 7, 7])
     # assert solution.judgePoint24([1, 9, 1, 2])
-    # Solution().judgePoint24([1, 9, 1, 2])
-    Solution().judgePoint24([3, 9, 7, 7])
-
+    # assert solution.judgePoint24([3, 3, 8, 8])
+    Solution().judgePoint24([1, 9, 1, 2])
+    # Solution().judgePoint24([3, 9, 7, 7])
