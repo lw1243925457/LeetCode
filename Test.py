@@ -11,10 +11,10 @@ class Solution:
         ans = []
 
         for i in range(0, size - 3):
-            if nums[i] == nums[i - 1]:
+            if i != 0 and nums[i] == nums[i - 1]:
                 continue
             for j in range(i + 1, size - 2):
-                if nums[j] == nums[j - 1]:
+                if j != i+1 and nums[j] == nums[j - 1]:
                     continue
 
                 left, right = j + 1, size - 1
@@ -40,6 +40,51 @@ class Solution:
         return ans
 
 
+import sys
+
+import sys
+
+
+def getResult(nums, ans, level):
+    print(level, ans)
+    if len(ans) > 9:
+        return
+
+    if level == 1:
+        for num in nums:
+            ans.append(num)
+    if level == 2:
+        for i in range(0, len(nums)):
+            for j in range(0, len(nums)):
+                if i != j:
+                    ans.append(nums[i]*10+nums[j])
+    getResult(nums, ans, level+1)
+
+def isRepeat(nums):
+    statistic = {}
+    for num in nums:
+        statistic[num] = statistic.get(num, 0) + 1
+        if statistic[num] > 1:
+            return False
+    return True
+
+
 if __name__ == "__main__":
-    print(Solution().fourSum(nums=[1, 0, -1, 0, -2, 2], target=0))
-    print(Solution().fourSum(nums=[1, 0, -1, 0, -2, 2, 3, 3, -3, 4], target=0))
+    # 1,4,8 81
+    nums = [8, 5, 9]
+    maxnum = max(nums) - 1
+    if 0 in nums or (2 in nums and 5 in nums) or (6 in nums and 9 in nums):
+        print(-1)
+    if 2 in nums:
+        nums.append(5)
+    elif 5 in nums:
+        nums.append(2)
+    if 6 in nums:
+        nums.append(9)
+    elif 9 in nums:
+        nums.append(6)
+    nums.sort()
+    ans = []
+    getResult(nums, ans, 1)
+    print(ans[maxnum])
+

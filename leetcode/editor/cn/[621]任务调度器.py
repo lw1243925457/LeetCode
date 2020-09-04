@@ -31,35 +31,27 @@ from typing import List
 
 
 class Solution:
+    """
+    解题思路：
+    自己实在是想不到，但这位哥们的填桶思路是真的秒啊
+    一、填桶法：https://leetcode-cn.com/problems/task-scheduler/solution/tian-tong-si-lu-you-tu-kan-wan-jiu-dong-by-mei-jia/
+    """
     def leastInterval(self, tasks: List[str], n: int) -> int:
         statistics = {}
         for task in tasks:
             statistics[task] = statistics.get(task, 0) + 1
-        sorted(statistics.items(), key=lambda k: k[1], reverse=False)
-        print(statistics)
+        # print(statistics)
+        rows = 0
+        for task in statistics:
+            if statistics[task] > rows:
+                rows = statistics[task]
 
-        ans = 0
-        remain = len(tasks)
-        start = 0
-        while remain > 0:
-            for i in range(0, n+1):
-                if i >= len(statistics):
-                    ans += 1
-                    continue
-                key = list(statistics.keys())[start + i]
-                statistics[key] = statistics[key] - 1
-                ans += 1
-                remain -= 1
-                if remain <= 0:
-                    break
-            for key in statistics.keys():
-                if statistics[key] == 0:
-                    start = start + 1
-                else:
-                    break
-            print(statistics, len(statistics))
-        print(ans)
-        return ans
+        cols = 0
+        for task in statistics:
+            if statistics[task] == rows:
+                cols += 1
+
+        return max((n+1)*(rows-1)+cols, len(tasks))
 
 # leetcode submit region end(Prohibit modification and deletion)
 
