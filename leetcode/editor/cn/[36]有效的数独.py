@@ -72,9 +72,9 @@ class Solution:
     """
     def isValidSudoku(self, board: List[List[str]]) -> bool:
         height, width = 9, 9
-        rows = [[0] * 10 for i in range(0, height)]
-        cols = [[0] * 10 for i in range(0, height)]
-        boxs = [[0] * 10 for i in range(0, height)]
+        rows = [[0] * 10 for _ in range(0, height)]
+        cols = [[0] * 10 for _ in range(0, height)]
+        boxs = [[0] * 10 for _ in range(0, height)]
 
         for i in range(0, height):
             for j in range(0, width):
@@ -82,6 +82,7 @@ class Solution:
                     continue
                 box = (i // 3) * 3 + j // 3
                 num = int(board[i][j])
+                print(i, j, num)
                 if rows[i][num] == 1 or cols[j][num] == 1 or boxs[box][num] == 1:
                     return False
                 rows[i][num] = 1
@@ -91,3 +92,18 @@ class Solution:
 
 
 # leetcode submit region end(Prohibit modification and deletion)
+
+
+if __name__ == "__main__":
+    board = [
+        ['5', '3', '4', '6', '7', '8', '1', '9', '2'],
+        ['6', '7', '2', '1', '9', '5', '3', '4', '8'],
+        ['1', '9', '8', '3', '4', '2', '5', '6', '7'],
+        ['8', '5', '9', '7', '6', '1', '4', '2', '3'],
+        ['4', '2', '6', '8', '5', '3', '9', '7', '1'],
+        ['7', '1', '3', '9', '2', '4', '8', '5', '6'],
+        ['9', '6', '1', '5', '3', '7', '2', '8', '4'],
+        ['2', '8', '7', '4', '1', '9', '6', '3', '5'],
+        ['3', '4', '5', '2', '8', '6', '7', '7', '9'],
+    ]
+    assert Solution().isValidSudoku(board)
