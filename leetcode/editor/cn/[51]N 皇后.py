@@ -48,15 +48,38 @@ class Solution:
     一、暴力破解：枚举每一行的各个位置，判断是否合理即可；这里需要注意的是左右斜行的处理
     左右斜行的转换处理很精妙
     时间复杂度最大为O(N^N)，但进行了剪枝
+
+    二、使用位运算优化空间，技巧很妙，滋滋滋
     """
 
     def solveNQueens(self, n: int) -> List[List[str]]:
-        cols = [0] * n
-        lrow, rrow = {}, {}
+        # cols = [0] * n
+        # lrow, rrow = {}, {}
+        cols, lrow, rrow = 0, 0, 0
 
         ans = []
-        self._fill(0, n, [], ans, cols, lrow, rrow)
+        # self._fill(0, n, [], ans, cols, lrow, rrow)
+        self._fillDigit(0, n, [], ans, cols, lrow, rrow)
         return ans
+
+    def _fillDigit(self, index, n, path, ans, cols, lrow, rrow):
+        """使用位运算优化空间"""
+        if index >= n:
+            ans.append([])
+            for i in range(0, n):
+                s = ["."] * n
+                s[path[i]] = "Q"
+                ans[-1].append("".join(s))
+            return
+
+        availablePositions = ((1 << n) - 1) & (~(cols | lrow | rrow))
+        while availablePositions:
+            position = availablePositions & (-availablePositions)
+            availablePositions = availablePositions & (availablePositions - 1)
+            column = bin(position - 1).count("1")
+            path.append(column)
+            self._fillDigit(index + 1, n, path, ans, cols | position, (lrow | position) << 1, (rrow | position) >> 1)
+            path.pop()
 
     def _fill(self, index, n, path, ans, cols, lrow, rrow):
         if index >= n:
