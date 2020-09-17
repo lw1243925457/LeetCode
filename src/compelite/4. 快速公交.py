@@ -58,29 +58,27 @@
 当前站台到达的花费 = 下个站台退一步（这步的上一步必然是要进行跳跃的） or 上个站台进一步 or 前面的站台进行了跳跃
 dp[i] = min(dp[i+1], dp[i-1], dp[i/jump]) + 1
 """
+from functools import lru_cache
 from typing import List
 
 
 class Solution:
     def busRapidTransit(self, target: int, inc: int, dec: int, jump: List[int], cost: List[int]) -> int:
+        return self._find(target, inc, dec, tuple(jump), tuple(cost))
+
+    @lru_cache(None)
+    def _find(self, target, inc, dec, jump, cost):
+        print(target, jump, cost)
         if target == 0:
             return 0
         if target == 1:
             return inc
-
-        dp = [0, inc]
-        for index in range(2, target+1):
-            dp.append(dp[index-1] + inc)
-            dp[index] = min(dp[index], self._jumped(dp, index, jump, cost, dp[index]+1))
-            dp[index] = min(dp[index], self._jumped(dp, index+1, jump, cost, dp[index]+1) + dec)
-        return dp[-1] % 1000000007
-
-    def _jumped(self, dp, index, jump, cost, origin):
-        minJump = origin
+        minCost = self._find(target - 1, inc, dec, jump, cost) + inc
+        minCost = min(minCost, self._find(target + 1, inc, dec, jump, cost) + dec)
         for i in range(0, len(jump)):
-            if index % jump[i] == 0:
-                minJump = min(minJump, dp[index // jump[i]] + cost[i])
-        return minJump
+            if target % jump[i] == 0:
+                minCost = min(minCost, self._find(target // jump[i], inc, dec, jump, cost) + cost[i])
+        return minCost
 
 
 if __name__ == "__main__":
