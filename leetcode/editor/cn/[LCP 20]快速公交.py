@@ -48,6 +48,32 @@
 
 
 # leetcode submit region begin(Prohibit modification and deletion)
+from functools import lru_cache
+from typing import List
+
+
 class Solution:
     def busRapidTransit(self, target: int, inc: int, dec: int, jump: List[int], cost: List[int]) -> int:
+        return self._find(target, inc, dec, tuple(jump), tuple(cost))
+
+    @lru_cache(None)
+    def _find(self, target, inc, dec, jump, cost):
+        print(target, jump, cost)
+        if target == 0:
+            return 0
+        if target == 1:
+            return inc
+        minCost = self._find(target - 1, inc, dec, jump, cost) + inc
+        minCost = min(minCost, self._find(target + 1, inc, dec, jump, cost) + dec)
+        for i in range(0, len(jump)):
+            if target % jump[i] == 0:
+                minCost = min(minCost, self._find(target // jump[i], inc, dec, jump, cost) + cost[i])
+        return minCost
 # leetcode submit region end(Prohibit modification and deletion)
+
+
+if __name__ == "__main__":
+    assert Solution().busRapidTransit(target=31, inc=5, dec=3, jump=[6], cost = [10]) == 33
+    assert Solution().busRapidTransit(target=612, inc=4, dec=5, jump=[3,6,8,11,5,10,4], cost = [4,7,6,3,7,6,4]) == 26
+    assert Solution().busRapidTransit(target=0, inc=4, dec=5, jump=[3,6,8,11,5,10,4], cost = [4,7,6,3,7,6,4]) == 0
+    assert Solution().busRapidTransit(target=1, inc=4, dec=5, jump=[3,6,8,11,5,10,4], cost = [4,7,6,3,7,6,4]) == 4
