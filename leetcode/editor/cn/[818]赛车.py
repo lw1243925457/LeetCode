@@ -40,6 +40,28 @@
 
 # leetcode submit region begin(Prohibit modification and deletion)
 class Solution:
+    """
+    解题思路：没太想明白，先模仿复制写一个
+    """
     def racecar(self, target: int) -> int:
-        
+        dp = [float('inf')] * (target + 1)
+
+        for i in range(1, target + 1):
+            k = 1
+            pos = 1
+
+            while pos < i:
+                q = 0
+                while ((1 << q) - 1) < pos:
+                    dp[i] = min(dp[i], k + 1 + q + 1 + dp[i - (pos - ((1 << q) - 1))])
+                    q += 1
+                k += 1
+                pos = (1 << k) - 1
+
+            if i == pos:
+                dp[i] = k
+            else:
+                dp[i] = min(dp[i], k + 1 + dp[pos - i])
+
+        return dp[target]
 # leetcode submit region end(Prohibit modification and deletion)
