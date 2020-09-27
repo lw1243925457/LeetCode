@@ -16,7 +16,28 @@
 
 
 # leetcode submit region begin(Prohibit modification and deletion)
+from typing import List
+
+
 class Solution:
+    """
+    解题思路：
+    一、排序加双指针，O(NlogN)
+    二、一次遍历哈希统计比较，O(N)
+    """
+
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        
+        m = {}
+        for i in range(0, len(nums)):
+            remainder = target - nums[i]
+            if remainder in m and i != m[remainder]:
+                return [m[remainder], i]
+            m[nums[i]] = i
+        return []
+
+
 # leetcode submit region end(Prohibit modification and deletion)
+
+
+if __name__ == "__main__":
+    assert Solution().twoSum(nums=[2, 7, 11, 15], target=9) == [0, 1]
