@@ -43,44 +43,40 @@ class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
         trie = {}
         for word in words:
-            p = trie
+            node = trie
             for c in word:
-                p[c] = p.get(c, {})
-                p = p[c]
-        # print(trie)
+                node[c] = node.get(c, {})
+                node = node[c]
 
-        if len(board) == 0 or len(board[0]) == 0:
-            return []
+        ans = set()
+        words = set(words)
 
         height, width = len(board), len(board[0])
-        words = set(words)
-        ans = set()
-
         for i in range(0, height):
             for j in range(0, width):
-                self._dfs(board, i, j, trie, words, ans, "")
+                self._search(board, i, j, height, width, trie, words, "", ans)
         return list(ans)
 
-    def _dfs(self, board, row, col, trie, words, ans, path):
-        if not 0 <= row < len(board) or not 0 <= col < len(board[0]) or board[row][col] not in trie:
+    def _search(self, board, row, col, height, width, node, words, path, ans):
+        if not 0 <= row < height or not 0 <= col < width or board[row][col] == "#" or board[row][col] not in node:
             return
-        if path + board[row][col] in words:
-            ans.add(path + board[row][col])
+        word = path + board[row][col]
+        if word in words:
+            ans.add(word)
 
-        temp = board[row][col]
         board[row][col] = "#"
-        self._dfs(board, row - 1, col, trie[temp], words, ans, path + temp)
-        self._dfs(board, row + 1, col, trie[temp], words, ans, path + temp)
-        self._dfs(board, row, col - 1, trie[temp], words, ans, path + temp)
-        self._dfs(board, row, col + 1, trie[temp], words, ans, path + temp)
-        board[row][col] = temp
+        self._search(board, row - 1, col, height, width, node[word[-1]], words, word, ans)
+        self._search(board, row + 1, col, height, width, node[word[-1]], words, word, ans)
+        self._search(board, row, col - 1, height, width, node[word[-1]], words, word, ans)
+        self._search(board, row, col + 1, height, width, node[word[-1]], words, word, ans)
+        board[row][col] = word[-1]
 
 
 # leetcode submit region end(Prohibit modification and deletion)
 
 
 if __name__ == "__main__":
-    words = ["oath", "pea", "eat", "rain"]
+    words = ["oath", "pea", "eat", "rain", "aaaa"]
     board = [
         ['o', 'a', 'a', 'n'],
         ['e', 't', 'a', 'e'],

@@ -60,22 +60,25 @@ class Solution:
     def connect(self, root: 'Node') -> 'Node':
         if not root:
             return root
-        root.next = None
-        cur = root
-        while cur:
-            leftMost = None
-            if cur.left:
-                leftMost = cur.left
-            elif cur.right:
-                leftMost = cur.right
-            if not leftMost:
-                cur = cur.next
-                continue
-
-            left = leftMost
-            while cur:
-                if cur.left:
-                    left.next = cur.left
+        stack = [root]
+        while stack:
+            stackBackup = []
+            pre = stack.pop(0)
+            if pre.left:
+                stackBackup.append(pre.left)
+            if pre.right:
+                stackBackup.append(pre.right)
+            while stack:
+                nextNode = stack.pop(0)
+                pre.next = nextNode
+                pre = nextNode
+                if pre.left:
+                    stackBackup.append(pre.left)
+                if pre.right:
+                    stackBackup.append(pre.right)
+            pre.next = None
+            stack = stackBackup
+        return root
 
 
 # leetcode submit region end(Prohibit modification and deletion)
