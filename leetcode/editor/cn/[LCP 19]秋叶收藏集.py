@@ -25,30 +25,22 @@
 # leetcode submit region begin(Prohibit modification and deletion)
 class Solution:
     def minimumOperations(self, leaves: str) -> int:
-        size = len(leaves)
-        left, right = 0, size - 1
-        count = 0
-        ybefore = False
+        n = len(leaves)
+        f = [[0, 0, 0] for _ in range(n)]
+        f[0][0] = int(leaves[0] == "y")
+        f[0][1] = f[0][2] = f[1][2] = float("inf")
 
-        while left < size:
-            if leaves[left] == "y":
-                ybefore = True
-                count += 1
-                left += 1
-            else:
-                break
-        while right > left and right >= 0:
-            if leaves[right] == "y":
-                count += 1
-                right -= 1
-            else:
-                break
+        for i in range(1, n):
+            isRed = int(leaves[i] == "r")
+            isYellow = int(leaves[i] == "y")
+            f[i][0] = f[i - 1][0] + isYellow
+            f[i][1] = min(f[i - 1][0], f[i - 1][1]) + isRed
+            if i >= 2:
+                f[i][2] = min(f[i - 1][1], f[i - 1][2]) + isYellow
 
-        for i in range(left, right+1):
-            if ybefore and i > 0 and leaves[i] == "r":
-                count += 1
-        print(count)
-        return count
+        return f[n - 1][2]
+
+
 # leetcode submit region end(Prohibit modification and deletion)
 
 

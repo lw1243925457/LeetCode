@@ -13,11 +13,35 @@
 
 # leetcode submit region begin(Prohibit modification and deletion)
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
 
 class Solution:
     def reverseBetween(self, head: ListNode, m: int, n: int) -> ListNode:
+        if m == n:
+            return head
+
+        root = ListNode(0)
+        root.next = head
+
+        pre = root
+        for _ in range(1, m):
+            pre = pre.next
+
+        start = pre.next
+        end = start.next
+        for _ in range(m, n):
+            next = end.next
+            end.next = start
+            start = end
+            end = next
+
+        pre.next.next = end
+        pre.next = start
+        return root.next
+
+
 # leetcode submit region end(Prohibit modification and deletion)
