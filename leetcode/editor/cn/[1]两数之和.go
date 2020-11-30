@@ -13,7 +13,9 @@
 // 
 // Related Topics 数组 哈希表 
 // 👍 9220 👎 0
+package main
 
+import "fmt"
 
 //leetcode submit region begin(Prohibit modification and deletion)
 /**
@@ -22,10 +24,21 @@
 二、一次遍历哈希存储判断，O(N)
  */
 func twoSum(nums []int, target int) []int {
-	m := map[int]int{}
-	for num := range nums {
-		fmt.Println(num)
+	m := make(map[int]int)
+	for i:=0; i< len(nums); i++ {
+		d := target - nums[i]
+		index, exist := m[d]
+		if exist && index != i {
+			return []int{index, i}
+		}
+		m[nums[i]] = i
 	}
-	return [2]int{1, 1}
+	return []int{}
 }
 //leetcode submit region end(Prohibit modification and deletion)
+
+func main() {
+	nums := []int{2, 7, 11, 15}
+	target := 9
+	fmt.Println(twoSum(nums, target))
+}
